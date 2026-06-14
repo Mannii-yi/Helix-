@@ -738,9 +738,9 @@ def tab_supply(medicines):
     # Safe zone shading
     fig.add_hrect(
         y0=2, y1=8,
-        fillcolor=f"{GREEN}10", line_width=0,
+        fillcolor="rgba(16,185,129,0.07)", line_width=0,
         annotation_text="Safe 2–8°C", annotation_position="top right",
-        annotation_font=dict(color=GREEN, size=11, family="Inter"),
+        annotation_font=dict(color="#10b981", size=11, family="Inter"),
     )
     # Upper threshold
     fig.add_hline(
@@ -1052,52 +1052,61 @@ def tab_field():
         conf_pct   = int(s["confidence"] * 100)
         conf_color = GREEN if conf_pct >= 85 else AMBER if conf_pct >= 70 else RED
 
-        # Build factor cells
-        factors_html = ""
-        for fname, fscore, fcolor in s["factors"]:
-            bar_fill = (
-                "gap-grn" if fcolor == GREEN else
-                "gap-amb" if fcolor == AMBER else
-                "gap-blu"
-            )
-            factors_html += f"""
-            <div>
-                <div class="label">{fname}</div>
-                <div style="font-family:'JetBrains Mono',monospace;font-size:1rem;
-                            font-weight:500;color:{fcolor};">{fscore}</div>
-                <div class="gap-bar">
-                    <div class="{bar_fill}" style="width:{fscore}%"></div>
-                </div>
-            </div>"""
-
+        # Card header + reasoning — self-contained, no nested HTML injection
         st.markdown(f"""
-        <div class="hx-card" style="margin-bottom:1rem;">
+        <div class="hx-card" style="margin-bottom:4px;">
             <div style="display:flex;justify-content:space-between;
                         align-items:flex-start;margin-bottom:12px;">
                 <div style="font-family:'Space Grotesk',sans-serif;
                             font-size:14.5px;font-weight:600;color:{T0};
-                            flex:1;padding-right:1rem;">
-                    {s['title']}
-                </div>
+                            flex:1;padding-right:1rem;">{s['title']}</div>
                 <div style="text-align:right;flex-shrink:0;">
                     <div style="font-family:'JetBrains Mono',monospace;
                                 font-size:1.4rem;font-weight:500;
                                 color:{conf_color};">{conf_pct}%</div>
                     <div style="font-size:9.5px;font-weight:600;letter-spacing:.09em;
                                 text-transform:uppercase;color:{T2};">Confidence</div>
-                    <div class="conf-bar" style="width:90px;margin-top:4px;">
-                        <div class="conf-fill"
-                             style="width:{conf_pct}%;background:{conf_color};"></div>
+                    <div style="height:4px;background:{B0};border-radius:2px;
+                                overflow:hidden;margin-top:5px;width:90px;">
+                        <div style="height:100%;border-radius:2px;
+                                    width:{conf_pct}%;background:{conf_color};"></div>
                     </div>
                 </div>
             </div>
             <div style="font-size:12.5px;color:{T1};line-height:1.65;
-                        margin-bottom:14px;">{s['reasoning']}</div>
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;">
-                {factors_html}
+                        margin-bottom:6px;">{s['reasoning']}</div>
+            <div style="font-size:10px;font-weight:600;letter-spacing:.11em;
+                        text-transform:uppercase;color:{T1};margin-top:12px;">
+                Confidence Factors
             </div>
         </div>
         """, unsafe_allow_html=True)
+
+        # Factor grid via st.columns — no HTML-in-HTML injection
+        factor_cols = st.columns(4)
+        for i_f, (fname, fscore, fcolor) in enumerate(s["factors"]):
+            bar_fill = (
+                "gap-grn" if fcolor == GREEN else
+                "gap-amb" if fcolor == AMBER else
+                "gap-blu"
+            )
+            with factor_cols[i_f]:
+                st.markdown(f"""
+                <div style="background:{BG3};border:1px solid {B1};
+                            border-radius:6px;padding:.875rem;margin-bottom:1rem;">
+                    <div style="font-size:10px;font-weight:600;letter-spacing:.1em;
+                                text-transform:uppercase;color:{T1};
+                                margin-bottom:5px;">{fname}</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:1.1rem;
+                                font-weight:500;color:{fcolor};">{fscore}</div>
+                    <div style="height:5px;background:{B0};border-radius:3px;
+                                overflow:hidden;margin-top:6px;">
+                        <div class="{bar_fill}" style="width:{fscore}%"></div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+        st.markdown('<div style="margin-bottom:.5rem;"></div>', unsafe_allow_html=True)
 
     # Methodology note
     st.markdown(f"""
