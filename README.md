@@ -177,29 +177,7 @@ Zone Analysis:
 ---
 
 
-## 🎯 Who This Is For
 
-**Immediate (Hackathon):**
-- FARaway judges looking for agentic AI + real impact
-- India-focused disaster response
-- Tech + humanitarian angle
-
-**Post-Hackathon:**
-- 🏥 NGOs (Red Cross, ICRC, World Vision, NDMA)
-- 💊 Pharma supply chains
-- 🚑 Disaster management authorities
-- 🏦 Impact investors / grant makers
-
----
-
-## 💰 What Comes Next
-
-**Month 1-2:** Pilot with 1 NGO on real cold chain data
-**Month 3-4:** Deploy during actual disaster response (if one occurs)
-**Month 5-6:** Fundraising round (₹50L-1Cr from impact investors)
-**Month 7+:** Scale across 5 disaster zones in Asia
-
----
 
 ## 📖 The Math (For the Curious)
 
@@ -299,6 +277,6 @@ Open an issue. We're here to help. This is too important to keep quiet.
 
 ---
 
-**Built with ❤️ and urgency during [FARaway Hackathon 2024]**
+**Built with ❤️ and urgency during [FARaway Hackathon 2026]**
 
 *"The problem isn't the lack of aid. The problem is that aid fails to reach the people who need it most. helix fixes that."*
